@@ -1,22 +1,123 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
+import { useState } from 'react'
+import heroImg from './assets/hero.png'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import './App.css'
 
-    <link rel="stylesheet" href="./main.css">
-    <!-- <link rel="stylesheet" href="css/main_dark.css"> -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,200;8..144,300;8..144,400;8..144,700;8..144,800;8..144,900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Michroma&display=swap" rel="stylesheet"><title>Skypro</title>
-</head>
-    <body>
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+      <section id="center">
+        <div className="hero">
+          <img src={heroImg} className="base" width="170" height="179" alt="" />
+          <img src={reactLogo} className="framework" alt="React logo" />
+          <img src={viteLogo} className="vite" alt="Vite logo" />
+        </div>
+        <div>
+          <h1>Get started</h1>
+          <p>
+            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+          </p>
+        </div>
+        <button
+          type="button"
+          className="counter"
+          onClick={() => setCount((count) => count + 1)}
+        >
+          Count is {count}
+        </button>
+      </section>
+
+      <div className="ticks"></div>
+
+      <section id="next-steps">
+        <div id="docs">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#documentation-icon"></use>
+          </svg>
+          <h2>Documentation</h2>
+          <p>Your questions, answered</p>
+          <ul>
+            <li>
+              <a href="https://vite.dev/" target="_blank">
+                <img className="logo" src={viteLogo} alt="" />
+                Explore Vite
+              </a>
+            </li>
+            <li>
+              <a href="https://react.dev/" target="_blank">
+                <img className="button-icon" src={reactLogo} alt="" />
+                Learn more
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="social">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#social-icon"></use>
+          </svg>
+          <h2>Connect with us</h2>
+          <p>Join the Vite community</p>
+          <ul>
+            <li>
+              <a href="https://github.com/vitejs/vite" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#github-icon"></use>
+                </svg>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.vite.dev/" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#discord-icon"></use>
+                </svg>
+                Discord
+              </a>
+            </li>
+            <li>
+              <a href="https://x.com/vite_js" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#x-icon"></use>
+                </svg>
+                X.com
+              </a>
+            </li>
+            <li>
+              <a href="https://bsky.app/profile/vite.dev" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#bluesky-icon"></use>
+                </svg>
+                Bluesky
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="ticks"></div>
+      <section id="spacer"></section>
+      <body>
         <div class="wrapper">
-            <!-- pop-up start-->
+            &gt!-- pop-up start--&rt
 
             <div class="pop-exit" id="popExit">
                 <div class="pop-exit__container">
@@ -44,7 +145,7 @@
                                 <form class="pop-new-card__form form-new" id="formNewCard" action="#">
                                     <div class="form-new__block">
                                         <label for="formTitle" class="subttl">Название задачи</label>
-                                        <input class="form-new__input" type="text" name="name" id="formTitle" placeholder="Введите название задачи..." autofocus>
+                                        <input class="form-new__input" type="text" name="name" id="formTitle" placeholder="Введите название задачи..." autofocus/>
                                     </div>
                                     <div class="form-new__block">
                                         <label for="textArea" class="subttl">Описание задачи</label>
@@ -118,7 +219,7 @@
                                             </div>
                                         </div>
 
-                                        <input type="hidden" id="datepick_value" value="08.09.2023">
+                                        <input type="hidden" id="datepick_value" value="08.09.2023"/>
                                         <div class="calendar__period">
                                             <p class="calendar__p date-end">Выберите срок исполнения <span class="date-control"></span>.</p>
                                         </div>
@@ -249,7 +350,7 @@
                                             </div>
                                         </div>
 
-                                        <input type="hidden" id="datepick_value" value="08.09.2023">
+                                        <input type="hidden" id="datepick_value" value="08.09.2023"/>
                                         <div class="calendar__period">
                                             <p class="calendar__p date-end">Срок исполнения: <span class="date-control">09.09.23</span></p>
                                         </div>
@@ -283,27 +384,27 @@
                 </div>
             </div>
 
-            <!-- pop-up end-->
+            &gt!-- pop-up end--&rt
 
             <header class="header">
                 <div class="container">
                     <div class="header__block">
                         <div class="header__logo _show _light">
-                            <a href="" target="_self"><img src="images/logo.png" alt="logo"></a>
+                            <a href="" target="_self"><img src="images/logo.png" alt="logo"/></a>
                         </div>
                         <div class="header__logo _dark">
-                            <a href="" target="_self"><img src="images/logo_dark.png" alt="logo"></a>
+                            <a href="" target="_self"><img src="images/logo_dark.png" alt="logo"/></a>
                         </div>
                         <nav class="header__nav">
                             <button class="header__btn-main-new _hover01" id="btnMainNew"><a href="#popNewCard">Создать новую задачу</a></button>
                             <a href="#user-set-target" class="header__user _hover02">Ivan Ivanov</a>
                             <div class="header__pop-user-set pop-user-set" id="user-set-target">
-                                <!-- <a href="">x</a> -->
+                                &gt!-- <a href="">x</a> --&rt
                                 <p class="pop-user-set__name">Ivan Ivanov</p>
                                 <p class="pop-user-set__mail">ivan.ivanov@gmail.com</p>
                                 <div class="pop-user-set__theme">
                                     <p>Темная тема</p>
-                                    <input type="checkbox" class="checkbox" name="checkbox">
+                                    <input type="checkbox" class="checkbox" name="checkbox"/>
                                 </div>
                                 <button type="button" class="_hover03"><a href="#popExit">Выйти</a></button>
                             </div>
@@ -752,4 +853,8 @@
 
         </div>
     </body>
-</html>
+    </>
+  )
+}
+
+export default App
