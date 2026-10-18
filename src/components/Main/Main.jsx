@@ -1,7 +1,7 @@
 import Column from '../Column/Column'
 
-function Main() {
-  const columns = [
+function Main({ cards }) {
+  const statusList = [
     'Без статуса',
     'Нужно сделать',
     'В работе',
@@ -14,8 +14,12 @@ function Main() {
       <div className="container">
         <div className="main__block">
           <div className="main__content">
-            {columns.map((title) => (
-              <Column key={title} title={title} />
+            {statusList.map((status) => (
+              <Column 
+                key={status} 
+                title={status} 
+                cards={cards.filter((card) => card.status === status)} 
+              />
             ))}
           </div>
         </div>

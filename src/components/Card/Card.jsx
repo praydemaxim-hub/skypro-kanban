@@ -1,10 +1,21 @@
-function Card() {
+function Card({ topic, title, date }) {
+  // Создаем объект соответствия тем и их CSS-классов
+  const topicStyles = {
+    'Web Design': '_orange',
+    'Research': '_green',
+    'Copywriting': '_purple',
+  };
+
+  // Ищем класс по ключу (topic), если его нет — ставим дефолтный '_gray'
+  const topicClass = topicStyles[topic] || '_gray';
+
   return (
     <div className="cards__item">
       <div className="cards__card card">
         <div className="card__group">
-          <div className="card__theme _orange">
-            <p className="_orange">Web Design</p>
+          {/* Применяем найденный класс */}
+          <div className={`card__theme ${topicClass}`}>
+            <p className={topicClass}>{topic}</p>
           </div>
           <a href="#popBrowse" target="_self">
             <div className="card__btn">
@@ -15,8 +26,8 @@ function Card() {
           </a>
         </div>
         <div className="card__content">
-          <a href="" target="_blank">
-            <h3 className="card__title">Название задачи</h3>
+          <a href="#popBrowse" target="_self">
+            <h3 className="card__title">{title}</h3>
           </a>
           <div className="card__date">
             <svg
@@ -47,7 +58,7 @@ function Card() {
                 </clipPath>
               </defs>
             </svg>
-            <p>30.10.23</p>
+            <p>{date}</p>
           </div>
         </div>
       </div>
