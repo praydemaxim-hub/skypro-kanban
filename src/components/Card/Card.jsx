@@ -1,35 +1,33 @@
-function Card({ topic, title, date }) {
-  // Создаем объект соответствия тем и их CSS-классов
-  const topicStyles = {
-    'Web Design': '_orange',
-    'Research': '_green',
-    'Copywriting': '_purple',
-  };
+import { useTheme } from 'styled-components'
+import * as S from './Card.styled'
 
-  // Ищем класс по ключу (topic), если его нет — ставим дефолтный '_gray'
-  const topicClass = topicStyles[topic] || '_gray';
+function Card({ topic, title, date }) {
+  const theme = useTheme();
+  
+  // Извлекаем цвета для темы из глобального объекта theme
+  const topicColor = theme.topicColors[topic] || theme.topicColors['default'];
 
   return (
-    <div className="cards__item">
-      <div className="cards__card card">
-        <div className="card__group">
-          {/* Применяем найденный класс */}
-          <div className={`card__theme ${topicClass}`}>
-            <p className={topicClass}>{topic}</p>
-          </div>
+    <S.CardItem>
+      <S.CardWrapper>
+        <S.CardGroup>
+          {/* Передаем динамический цвет пропсом $color */}
+          <S.CardTheme $color={topicColor}>
+            <p>{topic}</p>
+          </S.CardTheme>
           <a href="#popBrowse" target="_self">
-            <div className="card__btn">
+            <S.CardBtn>
               <div></div>
               <div></div>
               <div></div>
-            </div>
+            </S.CardBtn>
           </a>
-        </div>
-        <div className="card__content">
+        </S.CardGroup>
+        <S.CardContent>
           <a href="#popBrowse" target="_self">
-            <h3 className="card__title">{title}</h3>
+            <S.CardTitle>{title}</S.CardTitle>
           </a>
-          <div className="card__date">
+          <S.CardDate>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="13"
@@ -59,10 +57,10 @@ function Card({ topic, title, date }) {
               </defs>
             </svg>
             <p>{date}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+          </S.CardDate>
+        </S.CardContent>
+      </S.CardWrapper>
+    </S.CardItem>
   )
 }
 

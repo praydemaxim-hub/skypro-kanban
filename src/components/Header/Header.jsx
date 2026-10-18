@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import PopUser from '../popups/PopUser/PopUser'
+import { Container } from '../../Common.styled'
+import * as S from './Header.styled'
 
 function Header() {
   const [isPopUserOpen, setIsPopUserOpen] = useState(false)
@@ -10,35 +12,27 @@ function Header() {
   }
 
   return (
-    <header className="header">
-      <div className="container">
-        <div className="header__block">
-          <div className="header__logo _show _light">
+    <S.HeaderStyled>
+      <Container>
+        <S.HeaderBlock>
+          <S.HeaderLogo>
             <a href="" target="_self">
               <img src="/images/logo.png" alt="logo" />
             </a>
-          </div>
-          <div className="header__logo _dark">
-            <a href="" target="_self">
-              <img src="/images/logo_dark.png" alt="logo" />
-            </a>
-          </div>
-          <nav className="header__nav">
-            <button className="header__btn-main-new _hover01" id="btnMainNew">
+          </S.HeaderLogo>
+          
+          <S.HeaderNav>
+            <S.HeaderBtnMainNew>
               <a href="#popNewCard">Создать новую задачу</a>
-            </button>
-            <a 
-              href="#user-set-target" 
-              className="header__user _hover02" 
-              onClick={togglePopUser}
-            >
+            </S.HeaderBtnMainNew>
+            <S.HeaderUser href="#user-set-target" onClick={togglePopUser}>
               Ivan Ivanov
-            </a>
+            </S.HeaderUser>
             <PopUser isOpen={isPopUserOpen} />
-          </nav>
-        </div>
-      </div>
-    </header>
+          </S.HeaderNav>
+        </S.HeaderBlock>
+      </Container>
+    </S.HeaderStyled>
   )
 }
 

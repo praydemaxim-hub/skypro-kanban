@@ -1,4 +1,6 @@
 import Column from '../Column/Column'
+import { Container } from '../../Common.styled'
+import * as S from './Main.styled'
 
 function Main({ cards }) {
   const statusList = [
@@ -10,10 +12,10 @@ function Main({ cards }) {
   ]
 
   return (
-    <main className="main">
-      <div className="container">
-        <div className="main__block">
-          <div className="main__content">
+    <S.MainStyled>
+      <Container>
+        <S.MainBlock>
+          <S.MainContent>
             {statusList.map((status) => (
               <Column 
                 key={status} 
@@ -21,10 +23,10 @@ function Main({ cards }) {
                 cards={cards.filter((card) => card.status === status)} 
               />
             ))}
-          </div>
-        </div>
-      </div>
-    </main>
+          </S.MainContent>
+        </S.MainBlock>
+      </Container>
+    </S.MainStyled>
   )
 }
 
