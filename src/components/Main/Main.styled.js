@@ -1,0 +1,25 @@
+import styled from 'styled-components';
+
+export const MainStyled = styled.main`
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.bgLight};
+`;
+
+export const MainBlock = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 25px 0 49px;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
+    padding: 40px 0 64px;
+  }
+`;
+
+export const MainContent = styled.div`
+  width: 100%;
+  display: flex;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
+    display: block;
+  }
+`;
