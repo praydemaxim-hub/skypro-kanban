@@ -1,7 +1,7 @@
-import Card from '../Card/Card'
-import * as S from './Column.styled'
+import Card from '../Card/Card';
+import * as S from './Column.styled';
 
-function Column({ title, cards }) {
+export default function Column({ title, cards }) {
   return (
     <S.MainColumn>
       <S.ColumnTitle>
@@ -11,6 +11,7 @@ function Column({ title, cards }) {
         {cards.map((card) => (
           <Card 
             key={card.id}
+            id={card.id}
             topic={card.topic}
             title={card.title}
             date={card.date}
@@ -18,7 +19,5 @@ function Column({ title, cards }) {
         ))}
       </S.CardsContainer>
     </S.MainColumn>
-  )
+  );
 }
-
-export default Column
