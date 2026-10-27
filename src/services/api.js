@@ -45,3 +45,13 @@ export async function deleteTask(token, id) {
     throw new Error(error.response?.data?.error || "Ошибка удаления задачи", { cause: error });
   }
 }
+export async function getTaskById(token, id) {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.task;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Ошибка получения задачи", { cause: error });
+  }
+}
