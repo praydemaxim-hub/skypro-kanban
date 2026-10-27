@@ -39,7 +39,6 @@ function Calendar() {
             <div className="calendar__day-name -weekend-">вс</div>
           </div>
           <div className="calendar__cells">
-            {/* дни месяца — можно сгенерировать позже */}
             {Array.from({ length: 35 }, (_, i) => (
               <div
                 key={i}

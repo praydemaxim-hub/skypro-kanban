@@ -33,9 +33,9 @@ export default function ExitPage({ handleAuth }) {
                   navigate('/'); 
                 }}
                 style={{ 
-                  backgroundColor: '#565eef', // Синий фон, как у кнопки "Да, выйти"
-                  color: 'white',             // Белый текст
-                  border: 'none',             // Убираем прозрачную обводку
+                  backgroundColor: '#565eef',
+                  color: 'white',
+                  border: 'none',
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center' 

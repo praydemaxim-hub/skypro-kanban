@@ -10,12 +10,10 @@ import CardPage from "./pages/CardPage/CardPage";
 import NewCardPage from "./pages/NewCardPage/NewCardPage";
 
 export default function AppRoutes() {
-  // Инициализируем стейт из localStorage, чтобы не выкидывало при обновлении страницы
   const [isAuth, setIsAuth] = useState(() => {
     return localStorage.getItem('isAuth') === 'true';
   });
 
-  // Функция-обертка, которая меняет стейт и сразу сохраняет его в память браузера
   const handleAuth = (value) => {
     setIsAuth(value);
     localStorage.setItem('isAuth', value.toString());

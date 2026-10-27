@@ -6,8 +6,7 @@ export default function SignInPage({ handleAuth }) {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
-    // Проверяем, зарегистрирован ли пользователь
+  
     const isRegistered = localStorage.getItem('isRegistered');
     
     if (isRegistered === 'true') {

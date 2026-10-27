@@ -7,11 +7,10 @@ export default function SignUpPage({ handleAuth }) {
   const handleRegister = (e) => {
     e.preventDefault();
     
-    // Имитируем сохранение пользователя в базу данных (сохраняем флаг в localStorage)
     localStorage.setItem('isRegistered', 'true');
     
-    handleAuth(true); // Сразу логиним после успешной регистрации
-    navigate('/');    // Отправляем на главную
+    handleAuth(true);
+    navigate('/');
   };
 
   return (

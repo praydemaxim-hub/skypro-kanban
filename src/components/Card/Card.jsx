@@ -5,7 +5,6 @@ import * as S from './Card.styled';
 export default function Card({ id, topic, title, date }) {
   const theme = useTheme();
   
-  // Извлекаем цвета для темы из глобального объекта theme
   const topicColor = theme.topicColors[topic] || theme.topicColors['default'];
 
   return (

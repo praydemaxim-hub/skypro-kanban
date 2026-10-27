@@ -26,7 +26,6 @@ export default function MainPage() {
       ) : (
         <Main cards={cards} />
       )}
-      {/* Здесь будут отрисовываться вложенные модалки (Exit, NewCard, Card) */}
       <Outlet />
     </>
   );
