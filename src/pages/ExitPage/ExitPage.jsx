@@ -5,7 +5,7 @@ export default function ExitPage({ handleAuth }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    handleAuth(false);
+    handleAuth(null);
     navigate('/login');
   };
 
