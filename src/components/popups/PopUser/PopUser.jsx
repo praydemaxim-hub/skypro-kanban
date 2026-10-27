@@ -1,6 +1,7 @@
-import * as S from './PopUser.styled'
+import { Link } from 'react-router-dom';
+import * as S from './PopUser.styled';
 
-function PopUser({ isOpen }) {
+export default function PopUser({ isOpen }) {
   return (
     <S.PopUserSet id="user-set-target" $isOpen={isOpen}>
       <S.PopUserName>Ivan Ivanov</S.PopUserName>
@@ -10,10 +11,8 @@ function PopUser({ isOpen }) {
         <input type="checkbox" name="checkbox" />
       </S.PopUserTheme>
       <S.PopUserButton type="button">
-        <a href="#popExit">Выйти</a>
+        <Link to="/exit">Выйти</Link>
       </S.PopUserButton>
     </S.PopUserSet>
-  )
+  );
 }
-
-export default PopUser

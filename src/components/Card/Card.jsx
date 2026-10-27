@@ -1,7 +1,8 @@
-import { useTheme } from 'styled-components'
-import * as S from './Card.styled'
+import { Link } from 'react-router-dom';
+import { useTheme } from 'styled-components';
+import * as S from './Card.styled';
 
-function Card({ topic, title, date }) {
+export default function Card({ id, topic, title, date }) {
   const theme = useTheme();
   
   // Извлекаем цвета для темы из глобального объекта theme
@@ -11,22 +12,21 @@ function Card({ topic, title, date }) {
     <S.CardItem>
       <S.CardWrapper>
         <S.CardGroup>
-          {/* Передаем динамический цвет пропсом $color */}
           <S.CardTheme $color={topicColor}>
             <p>{topic}</p>
           </S.CardTheme>
-          <a href="#popBrowse" target="_self">
+          <Link to={`/card/${id}`}>
             <S.CardBtn>
               <div></div>
               <div></div>
               <div></div>
             </S.CardBtn>
-          </a>
+          </Link>
         </S.CardGroup>
         <S.CardContent>
-          <a href="#popBrowse" target="_self">
+          <Link to={`/card/${id}`}>
             <S.CardTitle>{title}</S.CardTitle>
-          </a>
+          </Link>
           <S.CardDate>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,5 @@ function Card({ topic, title, date }) {
         </S.CardContent>
       </S.CardWrapper>
     </S.CardItem>
-  )
+  );
 }
-
-export default Card
