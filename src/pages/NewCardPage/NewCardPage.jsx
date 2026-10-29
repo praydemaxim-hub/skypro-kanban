@@ -4,22 +4,17 @@ import Calendar from '../../components/Calendar/Calendar';
 export default function NewCardPage() {
   const navigate = useNavigate();
 
-  // Функция для закрытия модалки при клике на темный фон
   const handleOverlayClick = () => {
     navigate('/');
   };
 
-  // Функция, предотвращающая закрытие при клике внутри самого белого окна
   const handleModalClick = (e) => {
     e.stopPropagation();
   };
 
   return (
     <div className="pop-new-card" id="popNewCard" style={{ display: 'block' }}>
-      {/* Вешаем обработчик закрытия на темный фон (контейнер) */}
       <div className="pop-new-card__container" onClick={handleOverlayClick}>
-        
-        {/* Останавливаем всплытие клика, чтобы клики внутри окна его не закрывали */}
         <div className="pop-new-card__block" onClick={handleModalClick}>
           <div className="pop-new-card__content">
             <h3 className="pop-new-card__ttl">Создание задачи</h3>

@@ -10,29 +10,34 @@ import CardPage from "./pages/CardPage/CardPage";
 import NewCardPage from "./pages/NewCardPage/NewCardPage";
 
 export default function AppRoutes() {
-  // Инициализируем стейт из localStorage, чтобы не выкидывало при обновлении страницы
-  const [isAuth, setIsAuth] = useState(() => {
-    return localStorage.getItem('isAuth') === 'true';
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem("user");
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
   });
 
-  // Функция-обертка, которая меняет стейт и сразу сохраняет его в память браузера
-  const handleAuth = (value) => {
-    setIsAuth(value);
-    localStorage.setItem('isAuth', value.toString());
+  const handleAuth = (userData) => {
+    setUser(userData);
+    if (userData) {
+      localStorage.setItem("user", JSON.stringify(userData));
+    } else {
+      localStorage.removeItem("user");
+    }
   };
 
   return (
     <Routes>
-      <Route element={<PrivateRoute isAuth={isAuth} />}>
-        <Route path="/" element={<MainPage />}>
-          {/* Передаем handleAuth во вложенную модалку выхода */}
+      <Route element={<PrivateRoute isAuth={!!user} />}>
+        <Route path="/" element={<MainPage user={user} />}>
           <Route path="exit" element={<ExitPage handleAuth={handleAuth} />} />
           <Route path="card/:id" element={<CardPage />} />
           <Route path="card/new" element={<NewCardPage />} />
         </Route>
       </Route>
 
-      {/* Передаем handleAuth на страницы входа и регистрации */}
       <Route path="/login" element={<SignInPage handleAuth={handleAuth} />} />
       <Route path="/register" element={<SignUpPage handleAuth={handleAuth} />} />
       <Route path="*" element={<NotFoundPage />} />
