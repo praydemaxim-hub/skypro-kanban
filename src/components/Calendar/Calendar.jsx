@@ -1,67 +1,158 @@
-function Calendar() {
-  return (
-    <div className="pop-new-card__calendar calendar">
-      <p className="calendar__ttl subttl">Даты</p>
-      <div className="calendar__block">
-        <div className="calendar__nav">
-          <div className="calendar__month">Сентябрь 2023</div>
-          <div className="nav__actions">
-            <div className="nav__action" data-action="prev">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="6"
-                height="11"
-                viewBox="0 0 6 11"
-              >
-                <path d="M5.72945 1.95273C6.09018 1.62041 6.09018 1.0833 5.72945 0.750969C5.36622 0.416344 4.7754 0.416344 4.41218 0.750969L0.528487 4.32883C-0.176162 4.97799 -0.176162 6.02201 0.528487 6.67117L4.41217 10.249C4.7754 10.5837 5.36622 10.5837 5.72945 10.249C6.09018 9.9167 6.09018 9.37959 5.72945 9.04727L1.87897 5.5L5.72945 1.95273Z" />
-              </svg>
-            </div>
-            <div className="nav__action" data-action="next">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="6"
-                height="11"
-                viewBox="0 0 6 11"
-              >
-                <path d="M0.27055 9.04727C-0.0901833 9.37959 -0.0901832 9.9167 0.27055 10.249C0.633779 10.5837 1.2246 10.5837 1.58783 10.249L5.47151 6.67117C6.17616 6.02201 6.17616 4.97799 5.47151 4.32883L1.58782 0.75097C1.2246 0.416344 0.633778 0.416344 0.270549 0.75097C-0.0901831 1.0833 -0.090184 1.62041 0.270549 1.95273L4.12103 5.5L0.27055 9.04727Z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div className="calendar__content">
-          <div className="calendar__days-names">
-            <div className="calendar__day-name">пн</div>
-            <div className="calendar__day-name">вт</div>
-            <div className="calendar__day-name">ср</div>
-            <div className="calendar__day-name">чт</div>
-            <div className="calendar__day-name">пт</div>
-            <div className="calendar__day-name -weekend-">сб</div>
-            <div className="calendar__day-name -weekend-">вс</div>
-          </div>
-          <div className="calendar__cells">
-            {Array.from({ length: 35 }, (_, i) => (
-              <div
-                key={i}
-                className={`calendar__cell ${
-                  i < 3 ? '_other-month' : '_cell-day'
-                } ${i === 11 ? '_current' : ''} ${
-                  i === 5 || i === 6 || i === 12 || i === 13 ? '_weekend' : ''
-                }`}
-              >
-                {i < 3 ? 28 + i : i - 2}
-              </div>
-            ))}
-          </div>
-        </div>
-        <input type="hidden" id="datepick_value" defaultValue="08.09.2023" />
-        <div className="calendar__period">
-          <p className="calendar__p date-end">
-            Выберите срок исполнения <span className="date-control"></span>.
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { useState, useEffect, useRef } from 'react';
+import * as S from './Calendar.styled';
 
-export default Calendar
+export default function Calendar({ selected, setSelected }) {
+  const [currentDate, setCurrentDate] = useState(selected ? new Date(selected) : new Date());
+  
+  const [isMonthPickerOpen, setIsMonthPickerOpen] = useState(false);
+  const [isYearPickerOpen, setIsYearPickerOpen] = useState(false);
+  
+  const [yearScrollStart, setYearScrollStart] = useState(new Date().getFullYear());
+
+  const monthRef = useRef(null);
+  const yearRef = useRef(null);
+
+  const months = [
+    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 
+    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  ];
+  
+  const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (monthRef.current && !monthRef.current.contains(e.target)) setIsMonthPickerOpen(false);
+      if (yearRef.current && !yearRef.current.contains(e.target)) setIsYearPickerOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handlePrevMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  const handleDayClick = (day) => {
+    if (!day) return;
+    const newSelectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    if (setSelected) setSelected(newSelectedDate);
+  };
+
+  const getDaysGrid = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    let startDay = new Date(year, month, 1).getDay();
+    startDay = startDay === 0 ? 6 : startDay - 1;
+
+    const blanks = Array.from({ length: startDay }, () => null);
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    
+    return [...blanks, ...days];
+  };
+
+  const today = new Date();
+  const daysGrid = getDaysGrid();
+
+  const formatFooterDate = (dateObj) => {
+    if (!dateObj) return '';
+    const d = String(dateObj.getDate()).padStart(2, '0');
+    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const y = String(dateObj.getFullYear()).slice(-2);
+    return `${d}.${m}.${y}.`;
+  };
+
+  const visibleYears = Array.from({ length: 5 }, (_, i) => yearScrollStart + i);
+
+  return (
+    <S.CalendarWrapper>
+      <S.MainTitle>Даты</S.MainTitle>
+      <S.Header>
+        <S.HeaderTitle>
+          <S.MonthSelector ref={monthRef}>
+            <span onClick={() => { setIsMonthPickerOpen(!isMonthPickerOpen); setIsYearPickerOpen(false); }}>
+              {months[currentDate.getMonth()]}
+            </span>
+            {isMonthPickerOpen && (
+              <S.DropdownGrid>
+                {months.map((m, idx) => (
+                  <S.DropdownItem key={m} onClick={() => {
+                    setCurrentDate(new Date(currentDate.getFullYear(), idx, 1));
+                    setIsMonthPickerOpen(false);
+                  }}>
+                    {m}
+                  </S.DropdownItem>
+                ))}
+              </S.DropdownGrid>
+            )}
+          </S.MonthSelector>
+          {' '}
+          <S.YearSelector ref={yearRef}>
+            <span onClick={() => { setIsYearPickerOpen(!isYearPickerOpen); setIsMonthPickerOpen(false); }}>
+              {currentDate.getFullYear()}
+            </span>
+            {isYearPickerOpen && (
+              <S.DropdownList>
+                <S.ArrowBtn onClick={() => setYearScrollStart(prev => Math.max(2000, prev - 1))}>▲</S.ArrowBtn>
+                {visibleYears.map((y) => (
+                  <S.DropdownItem key={y} onClick={() => {
+                    setCurrentDate(new Date(y, currentDate.getMonth(), 1));
+                    setIsYearPickerOpen(false);
+                  }}>
+                    {y}
+                  </S.DropdownItem>
+                ))}
+                <S.ArrowBtn onClick={() => setYearScrollStart(prev => Math.min(2200 - 4, prev + 1))}>▼</S.ArrowBtn>
+              </S.DropdownList>
+            )}
+          </S.YearSelector>
+        </S.HeaderTitle>
+        <S.NavArrows>
+          <S.Arrow onClick={handlePrevMonth}>{'<'}</S.Arrow>
+          <S.Arrow onClick={handleNextMonth}>{'>'}</S.Arrow>
+        </S.NavArrows>
+      </S.Header>
+
+      <S.DaysOfWeek>
+        {daysOfWeek.map(day => <S.DayName key={day}>{day}</S.DayName>)}
+      </S.DaysOfWeek>
+
+      <S.DaysGrid>
+        {daysGrid.map((day, index) => {
+          const isToday = day === today.getDate() && 
+                          currentDate.getMonth() === today.getMonth() && 
+                          currentDate.getFullYear() === today.getFullYear();
+                          
+          const isSelected = selected && day === selected.getDate() && 
+                             currentDate.getMonth() === selected.getMonth() && 
+                             currentDate.getFullYear() === selected.getFullYear();
+
+          return (
+            <S.DayCellWrapper key={index}>
+              <S.DayCell 
+                $isEmpty={!day} 
+                $isToday={isToday} 
+                $isSelected={isSelected}
+                onClick={() => handleDayClick(day)}
+              >
+                {day || ''}
+              </S.DayCell>
+            </S.DayCellWrapper>
+          );
+        })}
+      </S.DaysGrid>
+
+      <S.FooterText>
+        {selected ? (
+          <>Срок исполнения: <span style={{ color: '#000' }}>{formatFooterDate(selected)}</span></>
+        ) : (
+          'Выберите срок исполнения.'
+        )}
+      </S.FooterText>
+    </S.CalendarWrapper>
+  );
+}
