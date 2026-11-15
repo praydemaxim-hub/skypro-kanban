@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Calendar from '../../components/Calendar/Calendar';
-import { updateTask, deleteTask, getTaskById } from '../../services/api';
+import { getTaskById } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTasks } from '../../contexts/TaskContext';
 
 export default function CardPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, setCards } = useOutletContext();
+  const { user } = useAuth();
+  const { updateTask, deleteTask } = useTasks();
   
   const [task, setTask] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -24,8 +27,7 @@ export default function CardPage() {
 
   const handleDelete = async () => {
     try {
-      const updatedTasks = await deleteTask(user.token, id);
-      setCards(updatedTasks);
+      await deleteTask(id);
       navigate('/');
     } catch (err) {
       setError(err.message);
@@ -34,8 +36,7 @@ export default function CardPage() {
 
   const handleSave = async () => {
     try {
-      const updatedTasks = await updateTask(user.token, id, editedTask);
-      setCards(updatedTasks);
+      await updateTask(id, editedTask);
       setIsEditMode(false);
       navigate('/');
     } catch (err) {

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Calendar from '../../components/Calendar/Calendar';
-import { addTask } from '../../services/api';
+import { useTasks } from '../../contexts/TaskContext';
 
 export default function NewCardPage() {
   const navigate = useNavigate();
-  const { user, setCards } = useOutletContext(); 
+  const { addTask } = useTasks(); 
 
   const [newTask, setNewTask] = useState({
     title: '',
@@ -27,8 +27,7 @@ export default function NewCardPage() {
       return;
     }
     try {
-      const updatedTasks = await addTask(user.token, newTask);
-      setCards(updatedTasks); 
+      await addTask(newTask);
       navigate('/');
     } catch (err) {
       setError(err.message);

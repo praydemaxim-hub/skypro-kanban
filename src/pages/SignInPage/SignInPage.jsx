@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { loginUser } from "../../services/auth";
+import { useAuth } from "../../contexts/AuthContext";
 import * as S from "./SignInPage.styled";
 
-export default function SignInPage({ handleAuth }) {
+export default function SignInPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  
   const [formData, setFormData] = useState({ login: "", password: "" });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,8 +26,7 @@ export default function SignInPage({ handleAuth }) {
 
     try {
       setIsLoading(true);
-      const userData = await loginUser(formData);
-      handleAuth(userData);
+      await login(formData);
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -39,20 +40,8 @@ export default function SignInPage({ handleAuth }) {
       <S.ModalBlock>
         <S.ModalTitle><h2>Вход</h2></S.ModalTitle>
         <S.ModalForm onSubmit={handleLogin}>
-          <S.ModalInput
-            type="text"
-            name="login"
-            placeholder="Эл. почта"
-            value={formData.login}
-            onChange={handleChange}
-          />
-          <S.ModalInput
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <S.ModalInput type="text" name="login" placeholder="Эл. почта" value={formData.login} onChange={handleChange} />
+          <S.ModalInput type="password" name="password" placeholder="Пароль" value={formData.password} onChange={handleChange} />
           {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
           <S.ModalBtnEnter type="submit" disabled={isLoading}>
             {isLoading ? "Загрузка..." : "Войти"}

@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import * as S from './PopUser.styled';
+import { useAuth } from '../../../contexts/AuthContext'; 
 
-export default function PopUser({ isOpen, user }) {
+export default function PopUser({ isOpen }) {
+  const { user } = useAuth(); 
+
   return (
     <S.PopUserSet id="user-set-target" $isOpen={isOpen}>
       <S.PopUserName>{user?.name || "Гость"}</S.PopUserName>

@@ -1,10 +1,12 @@
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
-export default function ExitPage({ handleAuth }) {
+export default function ExitPage() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    handleAuth(null);
+    logout();
   };
 
   return (
@@ -17,12 +19,10 @@ export default function ExitPage({ handleAuth }) {
           <form className="pop-exit__form" id="popExitForm" action="#">
             <div className="pop-exit__form-group">
               
-              {/* Кнопка "Да, выйти" */}
               <button className="pop-exit__exit-yes _hover01">
                 <Link to="/login" onClick={handleLogout}>Да, выйти</Link>
               </button>
               
-              {/* Кнопка "Нет, остаться" */}
               <button className="pop-exit__exit-no _hover03">
                 <Link to="/">Нет, остаться</Link>
               </button>

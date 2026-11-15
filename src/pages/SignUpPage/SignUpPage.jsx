@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { registerUser } from "../../services/auth";
+import { useAuth } from "../../contexts/AuthContext";
 import * as S from "../SignInPage/SignInPage.styled";
 
-export default function SignUpPage({ handleAuth }) {
+export default function SignUpPage() {
   const navigate = useNavigate();
+  const { register } = useAuth();
+  
   const [formData, setFormData] = useState({ name: "", login: "", password: "" });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,8 +26,7 @@ export default function SignUpPage({ handleAuth }) {
 
     try {
       setIsLoading(true);
-      const userData = await registerUser(formData);
-      handleAuth(userData);
+      await register(formData);
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -39,27 +40,9 @@ export default function SignUpPage({ handleAuth }) {
       <S.ModalBlock>
         <S.ModalTitle><h2>Регистрация</h2></S.ModalTitle>
         <S.ModalForm onSubmit={handleRegister}>
-          <S.ModalInput
-            type="text"
-            name="name"
-            placeholder="Имя"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <S.ModalInput
-            type="text"
-            name="login"
-            placeholder="Эл. почта"
-            value={formData.login}
-            onChange={handleChange}
-          />
-          <S.ModalInput
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <S.ModalInput type="text" name="name" placeholder="Имя" value={formData.name} onChange={handleChange} />
+          <S.ModalInput type="text" name="login" placeholder="Эл. почта" value={formData.login} onChange={handleChange} />
+          <S.ModalInput type="password" name="password" placeholder="Пароль" value={formData.password} onChange={handleChange} />
           {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
           <S.ModalBtnEnter type="submit" disabled={isLoading}>
             {isLoading ? "Загрузка..." : "Зарегистрироваться"}

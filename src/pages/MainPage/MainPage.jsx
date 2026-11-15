@@ -1,34 +1,21 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Main from "../../components/Main/Main";
-import { getTasks } from "../../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { useTasks } from "../../contexts/TaskContext";
 
-export default function MainPage({ user }) {
-  const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+export default function MainPage() {
+  const { user } = useAuth();
+  const { tasks, isLoading, error, loadTasks } = useTasks();
 
   useEffect(() => {
-    if (!user?.token) return;
-
-    getTasks(user.token)
-      .then((tasks) => {
-        setCards(tasks);
-        setError("");
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    loadTasks();
   }, [user]);
 
   return (
     <>
-      {/* Передаем данные пользователя в Header */}
-      <Header user={user} />
+      <Header />
       
       {error && (
         <div style={{ textAlign: "center", color: "red", marginTop: "20px" }}>
@@ -41,11 +28,10 @@ export default function MainPage({ user }) {
           <h2 style={{ color: "#565eef" }}>Данные загружаются...</h2>
         </div>
       ) : (
-        !error && <Main cards={cards} />
+        !error && <Main cards={tasks} />
       )}
       
-      {/* Передаем пользователя и функцию обновления карточек в модалки */}
-      <Outlet context={{ user, setCards }} />
+      <Outlet />
     </>
   );
 }

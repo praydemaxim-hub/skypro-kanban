@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import PopUser from '../popups/PopUser/PopUser';
 import { Container } from '../../Common.styled';
 import * as S from './Header.styled';
+import { useAuth } from '../../contexts/AuthContext';
 
-export default function Header({ user }) {
+export default function Header() {
+  const { user } = useAuth();
   const [isPopUserOpen, setIsPopUserOpen] = useState(false);
-
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -15,9 +16,7 @@ export default function Header({ user }) {
         setIsPopUserOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -47,7 +46,7 @@ export default function Header({ user }) {
               {user?.name || "Гость"}
             </S.HeaderUser>
             
-            <PopUser isOpen={isPopUserOpen} user={user} />
+            <PopUser isOpen={isPopUserOpen} />
           </S.HeaderNav>
         </S.HeaderBlock>
       </Container>
