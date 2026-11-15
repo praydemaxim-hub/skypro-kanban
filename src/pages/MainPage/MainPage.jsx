@@ -1,32 +1,37 @@
-import { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import Header from '../../components/Header/Header';
-import Main from '../../components/Main/Main';
-import { cardList } from '../../data';
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import Header from "../../components/Header/Header";
+import Main from "../../components/Main/Main";
+import { useAuth } from "../../contexts/AuthContext";
+import { useTasks } from "../../contexts/TaskContext";
 
 export default function MainPage() {
-  const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const { tasks, isLoading, error, loadTasks } = useTasks();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setCards(cardList);
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+    loadTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <>
       <Header />
-      {isLoading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <h2 style={{ color: '#565eef' }}>Данные загружаются...</h2>
+      
+      {error && (
+        <div style={{ textAlign: "center", color: "red", marginTop: "20px" }}>
+          <h3>Не удалось загрузить задачи</h3>
+          <p>{error}</p>
+        </div>
+      )}
+      {!error && isLoading ? (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <h2 style={{ color: "#565eef" }}>Данные загружаются...</h2>
         </div>
       ) : (
-        <Main cards={cards} />
+        !error && <Main cards={tasks} />
       )}
-      {/* Здесь будут отрисовываться вложенные модалки (Exit, NewCard, Card) */}
+      
       <Outlet />
     </>
   );

@@ -3,7 +3,7 @@ import { theme } from './theme'
 import { GlobalStyle } from './Global.styled'
 import { Wrapper } from './Common.styled'
 import AppRoutes from './AppRoutes'
-import './App.css' // Оставляем только старые стили модалок PopBrowse и PopNewCard
+import './App.css'
 
 function App() {
   return (
