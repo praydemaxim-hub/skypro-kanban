@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import PopUser from '../popups/PopUser/PopUser';
 import { Container } from '../../Common.styled';
 import * as S from './Header.styled';
 
-export default function Header() {
+export default function Header({ user }) {
   const [isPopUserOpen, setIsPopUserOpen] = useState(false);
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsPopUserOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const togglePopUser = (e) => {
     e.preventDefault();
-    setIsPopUserOpen(!isPopUserOpen);
+    setIsPopUserOpen((prev) => !prev);
   };
 
   return (
@@ -22,14 +38,16 @@ export default function Header() {
             </Link>
           </S.HeaderLogo>
           
-          <S.HeaderNav>
-            <S.HeaderBtnMainNew>
+          <S.HeaderNav ref={dropdownRef}>
+            <S.HeaderBtnMainNew onClick={() => setIsPopUserOpen(false)}>
               <Link to="/card/new">Создать новую задачу</Link>
             </S.HeaderBtnMainNew>
+            
             <S.HeaderUser href="#" onClick={togglePopUser}>
-              Ivan Ivanov
+              {user?.name || "Гость"}
             </S.HeaderUser>
-            <PopUser isOpen={isPopUserOpen} />
+            
+            <PopUser isOpen={isPopUserOpen} user={user} />
           </S.HeaderNav>
         </S.HeaderBlock>
       </Container>

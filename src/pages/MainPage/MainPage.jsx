@@ -27,7 +27,9 @@ export default function MainPage({ user }) {
 
   return (
     <>
-      <Header />
+      {/* Передаем данные пользователя в Header */}
+      <Header user={user} />
+      
       {error && (
         <div style={{ textAlign: "center", color: "red", marginTop: "20px" }}>
           <h3>Не удалось загрузить задачи</h3>
@@ -41,7 +43,9 @@ export default function MainPage({ user }) {
       ) : (
         !error && <Main cards={cards} />
       )}
-      <Outlet />
+      
+      {/* Передаем пользователя и функцию обновления карточек в модалки */}
+      <Outlet context={{ user, setCards }} />
     </>
   );
 }

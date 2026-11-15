@@ -16,7 +16,10 @@ export async function getTasks(token) {
 export async function addTask(token, taskData) {
   try {
     const response = await axios.post(API_URL, taskData, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "",
+      },
     });
     return response.data.tasks;
   } catch (error) {
@@ -27,7 +30,10 @@ export async function addTask(token, taskData) {
 export async function updateTask(token, id, taskData) {
   try {
     const response = await axios.put(`${API_URL}/${id}`, taskData, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "",
+      },
     });
     return response.data.tasks;
   } catch (error) {
