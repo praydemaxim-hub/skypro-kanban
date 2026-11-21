@@ -37,7 +37,7 @@ export const HeaderBtnMainNew = styled.button`
   height: 30px;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
+  color: #ffffff;
   border: none;
   font-size: 14px;
   line-height: 1;
@@ -46,7 +46,7 @@ export const HeaderBtnMainNew = styled.button`
   transition: background-color 0.2s;
 
   a {
-    color: ${({ theme }) => theme.colors.white};
+    color: #ffffff;
   }
 
   &:hover {
@@ -73,7 +73,7 @@ export const HeaderUser = styled.a`
   justify-content: center;
   font-size: 14px;
   line-height: 20px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : theme.colors.primary)};
   transition: color 0.2s;
 
   &::after {
@@ -82,8 +82,10 @@ export const HeaderUser = styled.a`
     width: 6px;
     height: 6px;
     border-radius: 1px;
-    border-left: 1.9px solid ${({ theme }) => theme.colors.primary};
-    border-bottom: 1.9px solid ${({ theme }) => theme.colors.primary};
+    border-left: 1.9px solid
+      ${({ theme }) => (theme.isDark ? '#FFFFFF' : theme.colors.primary)};
+    border-bottom: 1.9px solid
+      ${({ theme }) => (theme.isDark ? '#FFFFFF' : theme.colors.primary)};
     transform: rotate(-45deg);
     margin: -6px 0 0 5px;
     padding: 0;

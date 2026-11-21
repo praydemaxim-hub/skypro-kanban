@@ -1,19 +1,13 @@
-import { ThemeProvider } from 'styled-components'
-import { theme } from './theme'
-import { GlobalStyle } from './Global.styled'
-import { Wrapper } from './Common.styled'
-import AppRoutes from './AppRoutes'
-import './App.css'
+import { AppThemeProvider } from './contexts/ThemeContext';
+import { GlobalStyle } from './Global.styled';
+import AppRoutes from './AppRoutes';
+import './App.css';
 
-function App() {
+export default function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <AppThemeProvider>
       <GlobalStyle />
-      <Wrapper>
-        <AppRoutes />
-      </Wrapper>
-    </ThemeProvider>
-  )
+      <AppRoutes />
+    </AppThemeProvider>
+  );
 }
-
-export default App

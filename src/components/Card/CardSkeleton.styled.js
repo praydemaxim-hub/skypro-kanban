@@ -12,9 +12,9 @@ const shimmer = keyframes`
 const SkeletonBase = styled.div`
   background: linear-gradient(
     90deg,
-    #c1cddc 0%,
-    #e9eef7 50%,
-    #c1cddc 100%
+    ${({ theme }) => theme.colors.skeletonFrom} 0%,
+    ${({ theme }) => theme.colors.skeletonTo} 50%,
+    ${({ theme }) => theme.colors.skeletonFrom} 100%
   );
   background-size: 200% 100%;
   animation: ${shimmer} 1.5s infinite linear;

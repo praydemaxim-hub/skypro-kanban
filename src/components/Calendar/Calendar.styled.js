@@ -11,7 +11,7 @@ export const CalendarWrapper = styled.div`
 export const MainTitle = styled.h4`
   font-size: 14px;
   font-weight: 600;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   margin: 0 0 10px 0;
 `;
 
@@ -89,28 +89,38 @@ export const DayCell = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  cursor: ${props => props.$isEmpty ? 'default' : 'pointer'};
-  font-weight: ${props => props.$isToday ? '700' : '400'};
-  color: ${props => props.$isEmpty ? 'transparent' : props.$isSelected ? '#FFFFFF' : '#94A6BE'};
-  background-color: ${props => props.$isSelected ? '#94A6BE' : 'transparent'};
+  cursor: ${(props) => (props.$isEmpty ? 'default' : 'pointer')};
+  font-weight: ${(props) => (props.$isToday ? '700' : '400')};
+  color: ${(props) =>
+    props.$isEmpty ? 'transparent' : props.$isSelected ? '#FFFFFF' : '#94A6BE'};
+  background-color: ${(props) => (props.$isSelected ? '#94A6BE' : 'transparent')};
   border-radius: 50%;
-  
+
   &:hover {
-    background-color: ${props => (!props.$isEmpty && !props.$isSelected) ? '#EAEEF6' : ''};
+    background-color: ${(props) =>
+      !props.$isEmpty && !props.$isSelected
+        ? props.theme.isDark
+          ? '#151419'
+          : '#EAEEF6'
+        : ''};
   }
 `;
 
 export const FooterText = styled.div`
   font-size: 10px;
   color: #94A6BE;
+
+  span {
+    color: ${({ theme }) => theme.colors.black} !important;
+  }
 `;
 
 export const DropdownGrid = styled.div`
   position: absolute;
   top: 20px;
   left: 0;
-  background: #FFF;
-  border: 1px solid #EAEEF6;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: grid;
@@ -125,8 +135,8 @@ export const DropdownList = styled.div`
   position: absolute;
   top: 20px;
   left: 0;
-  background: #FFF;
-  border: 1px solid #EAEEF6;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -139,12 +149,12 @@ export const DropdownList = styled.div`
 export const DropdownItem = styled.div`
   padding: 5px;
   font-size: 10px;
-  color: #000;
+  color: ${({ theme }) => theme.colors.black};
   text-align: center;
   border-radius: 4px;
   cursor: pointer;
   &:hover {
-    background: #EAEEF6;
+    background: ${({ theme }) => (theme.isDark ? '#151419' : '#EAEEF6')};
     color: #565EEF;
   }
 `;
