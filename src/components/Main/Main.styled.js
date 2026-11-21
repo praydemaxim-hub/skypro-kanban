@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const MainStyled = styled.main`
   width: 100%;
+  min-height: calc(100vh - 70px);
   background-color: ${({ theme }) => theme.colors.bgLight};
 `;
 
@@ -21,5 +22,19 @@ export const MainContent = styled.div`
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
     display: block;
+  }
+`;
+
+export const EmptyMessage = styled.div`
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: 20px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.colors.grayText};
   }
 `;
