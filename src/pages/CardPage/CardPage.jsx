@@ -6,6 +6,20 @@ import { getTaskById } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTasks } from '../../contexts/TaskContext';
 
+const STATUS_LIST = [
+  'Без статуса',
+  'Нужно сделать',
+  'В работе',
+  'Тестирование',
+  'Готово',
+];
+
+const TOPIC_CLASSES = {
+  'Web Design': '_orange',
+  Research: '_green',
+  Copywriting: '_purple',
+};
+
 export default function CardPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,8 +55,16 @@ export default function CardPage() {
   };
 
   const handleSave = async () => {
+    if (!editedTask?.description?.trim()) {
+      setError('Описание задачи не может быть пустым');
+      return;
+    }
+
     try {
-      await updateTask(id, editedTask);
+      await updateTask(id, {
+        ...editedTask,
+        description: editedTask.description.trim(),
+      });
       toast.success('Задача успешно обновлена');
       setIsEditMode(false);
       navigate('/');
@@ -55,9 +77,19 @@ export default function CardPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedTask({ ...editedTask, [name]: value });
+    setError('');
   };
 
-  if (!task) return <div style={{ display: 'block' }} className="pop-browse">Загрузка...</div>;
+  if (!task) {
+    return (
+      <div style={{ display: 'block' }} className="pop-browse">
+        Загрузка...
+      </div>
+    );
+  }
+
+  const topicClass = TOPIC_CLASSES[task.topic] || '_gray';
+  const visibleStatuses = isEditMode ? STATUS_LIST : [task.status];
 
   return (
     <div className="pop-browse" id="popBrowse" style={{ display: 'block' }}>
@@ -65,33 +97,36 @@ export default function CardPage() {
         <div className="pop-browse__block" onClick={(e) => e.stopPropagation()}>
           <div className="pop-browse__content">
             <div className="pop-browse__top-block">
-              <h3 className="pop-browse__ttl">Заголовок задачи</h3>
-              <div className="categories__theme theme-top _orange _active-category">
-                <p className="_orange">{task.topic}</p>
+              <h3 className="pop-browse__ttl">{task.title}</h3>
+              <div className={`categories__theme theme-top ${topicClass} _active-category`}>
+                <p className={topicClass}>{task.topic}</p>
               </div>
             </div>
 
             <div className="pop-browse__status status">
               <p className="status__p subttl">Статус</p>
               <div className="status__themes">
-                {['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово'].map((status) => (
-                  <div
-                    key={status}
-                    className={`status__theme ${editedTask?.status === status ? '_gray' : ''}`}
-                    onClick={() => isEditMode && setEditedTask({ ...editedTask, status })}
-                    style={{
-                      cursor: isEditMode ? 'pointer' : 'default',
-                      backgroundColor: editedTask?.status === status ? '#94A6BE' : 'transparent',
-                      color: editedTask?.status === status ? '#FFF' : '#94A6BE',
-                      border: editedTask?.status === status ? 'none' : '1px solid #94A6BE',
-                      borderRadius: '24px',
-                      padding: '8px 20px',
-                      marginRight: '10px',
-                    }}
-                  >
-                    <p>{status}</p>
-                  </div>
-                ))}
+                {visibleStatuses.map((status) => {
+                  const isActive = (isEditMode ? editedTask?.status : task.status) === status;
+                  return (
+                    <div
+                      key={status}
+                      className={`status__theme ${isActive ? '_gray' : ''}`}
+                      onClick={() => isEditMode && setEditedTask({ ...editedTask, status })}
+                      style={{
+                        cursor: isEditMode ? 'pointer' : 'default',
+                        backgroundColor: isActive ? '#94A6BE' : 'transparent',
+                        color: isActive ? '#FFF' : '#94A6BE',
+                        border: isActive ? 'none' : '1px solid #94A6BE',
+                        borderRadius: '24px',
+                        padding: '8px 20px',
+                        marginRight: '10px',
+                      }}
+                    >
+                      <p>{status}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -117,7 +152,7 @@ export default function CardPage() {
               />
             </div>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: '#F84D4D', marginBottom: '10px', fontSize: '14px' }}>{error}</p>}
 
             {!isEditMode ? (
               <div className="pop-browse__btn-browse">
@@ -144,6 +179,7 @@ export default function CardPage() {
                     onClick={() => {
                       setIsEditMode(false);
                       setEditedTask(task);
+                      setError('');
                     }}
                   >
                     Отменить
