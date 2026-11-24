@@ -20,7 +20,7 @@ export const ModalBlock = styled.div`
   width: 100%;
   padding: 50px 60px;
   border-radius: 10px;
-  border: 0.7px solid #D4DBE5;
+  border: 0.7px solid ${({ theme }) => (theme.isDark ? '#4E5566' : '#D4DBE5')};
   box-shadow: 0px 4px 67px -12px rgba(0, 0, 0, 0.13);
 `;
 
@@ -32,6 +32,7 @@ export const ModalTitle = styled.div`
     line-height: 30px;
     letter-spacing: -0.6px;
     margin-bottom: 20px;
+    color: ${({ theme }) => theme.colors.black};
   }
 `;
 
@@ -46,16 +47,28 @@ export const ModalForm = styled.form`
 export const ModalInput = styled.input`
   width: 100%;
   border-radius: 8px;
-  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  border: 0.7px solid
+    ${({ $isError }) => ($isError ? '#F84D4D' : 'rgba(148, 166, 190, 0.4)')};
+  background-color: transparent;
+  color: ${({ theme }) => theme.colors.black};
   outline: none;
   padding: 10px 8px;
   margin-bottom: 7px;
+  transition: border-color 0.2s;
 
   &::placeholder {
     font-weight: 400;
     font-size: 14px;
     color: ${({ theme }) => theme.colors.grayText};
   }
+`;
+
+export const ErrorMessage = styled.p`
+  color: #f84d4d;
+  font-size: 12px;
+  line-height: 150%;
+  text-align: center;
+  margin-top: 7px;
 `;
 
 export const ModalBtnEnter = styled.button`
@@ -67,22 +80,30 @@ export const ModalBtnEnter = styled.button`
   margin-bottom: 20px;
   border: none;
   outline: none;
-  color: ${({ theme }) => theme.colors.white};
+  color: #ffffff;
   font-weight: 500;
   transition: 0.2s;
-  
-  &:hover {
+
+  &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
+
+  &:disabled {
+    background-color: #94a6be;
+    cursor: not-allowed;
   }
 `;
 
 export const ModalFormGroup = styled.div`
   text-align: center;
-  p, a {
+
+  p,
+  a {
     color: rgba(148, 166, 190, 0.4);
     font-size: 14px;
     font-weight: 400;
   }
+
   a {
     text-decoration: underline;
   }

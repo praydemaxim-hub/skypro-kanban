@@ -1,16 +1,29 @@
-# React + Vite
+# Skypro Kanban
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Веб-приложение для управления задачами в формате Канбан-доски, разработанное на React.
 
-Currently, two official plugins are available:
+## Технологический стек
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React** (функциональные компоненты, хуки)
+- **Vite** (сборка проекта)
+- **React Router DOM** (маршрутизация и приватные роуты)
+- **Styled Components** (стилизация и темизация через `ThemeProvider`)
+- **Context API** (управление состоянием авторизации, задач и темы)
+- **React-Toastify** (всплывающие уведомления)
 
-## React Compiler
+## Основной функционал
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Авторизация и регистрация:** вход и создание аккаунта с сохранением сессии в `localStorage`, защищённые маршруты (`PrivateRoute`) и модальное окно подтверждения выхода.
+- **Валидация форм:** проверка на пустые и пробельные поля, подсветка полей с ошибками, блокировка кнопки отправки при некорректных данных и вывод сообщений об ошибках от сервера.
+- **Канбан-доска:** распределение задач по 5 статусам (`Без статуса`, `Нужно сделать`, `В работе`, `Тестирование`, `Готово`).
+- **Управление задачами (CRUD):**
+  - Создание новой задачи с выбором категории (`Web Design`, `Research`, `Copywriting`) и срока исполнения через интерактивный календарь.
+  - Просмотр подробной информации о задаче.
+  - Редактирование описания, статуса и даты выполнения.
+  - Удаление задачи.
+- **Состояния интерфейса:** анимированный градиентный скелетон-лоадер во время загрузки данных и корректное отображение пустого состояния («Новых задач нет»).
+- **Страница 404:** стилизованная страница для несуществующих маршрутов со ссылкой возврата на главную.
+- **Адаптивная вёрстка:** поддержка десктопной и мобильной версий.
+- **Переключение светлой и тёмной темы:** реализовано через `ThemeContext` и `ThemeProvider` из `styled-components`. Выбор темы сохраняется в `localStorage`, автоматически меняются цветовая палитра, логотип, бейджи категорий, скелетон-лоадер и тема уведомлений.
+- **Продвинутые оповещения (`react-toastify`):** информативные всплывающие уведомления при входе (с приветствием по имени пользователя), выходе, создании, редактировании, перемещении и удалении задач, а также при ошибках сети и сервера.
+- **Drag-and-Drop:** перетаскивание карточек задач между колонками с визуальной пунктирной областью сброса и автоматическим обновлением статуса на сервере.
