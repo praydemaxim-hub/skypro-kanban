@@ -6,6 +6,11 @@ export const CalendarWrapper = styled.div`
   font-family: 'Roboto', Arial, sans-serif;
   color: #94A6BE;
   user-select: none;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
 `;
 
 export const MainTitle = styled.h4`

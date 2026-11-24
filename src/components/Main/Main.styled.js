@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const MainStyled = styled.main`
   width: 100%;
-  min-height: calc(100vh - 70px);
   background-color: ${({ theme }) => theme.colors.bgLight};
 `;
 
@@ -13,6 +12,10 @@ export const MainBlock = styled.div`
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
     padding: 40px 0 64px;
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 20px 0 90px;
   }
 `;
 
@@ -33,8 +36,8 @@ export const EmptyMessage = styled.div`
   justify-content: center;
 
   p {
+    color: ${({ theme }) => theme.colors.grayText};
     font-size: 20px;
     font-weight: 500;
-    color: ${({ theme }) => theme.colors.grayText};
   }
 `;

@@ -35,6 +35,7 @@ export default function Column({
 
   return (
     <S.MainColumn
+      data-status={title}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -52,6 +53,7 @@ export default function Column({
             date={card.date}
             onDragStartCard={onDragStartCard}
             onDragEndCard={onDragEndCard}
+            onDropCard={onDropCard}
           />
         ))}
         {isDraggingAny && <S.DropZone $isOver={isOver} />}

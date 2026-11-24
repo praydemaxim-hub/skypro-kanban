@@ -1,33 +1,45 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useTheme } from 'styled-components';
+import { useAuth } from '../../contexts/AuthContext';
 import PopUser from '../popups/PopUser/PopUser';
 import { Container } from '../../Common.styled';
 import * as S from './Header.styled';
-import { useAuth } from '../../contexts/AuthContext';
-import { useTheme } from '../../contexts/ThemeContext';
 
 export default function Header() {
+  const [openedPath, setOpenedPath] = useState(null);
   const { user } = useAuth();
-  const { isDark } = useTheme();
-  const [isPopUserOpen, setIsPopUserOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const theme = useTheme();
+  const location = useLocation();
+  const userMenuRef = useRef(null);
+
+  const isOpen = openedPath === location.pathname;
+  const isModalOpen = location.pathname.startsWith('/card');
+
+  const handleToggleUser = (e) => {
+    e.preventDefault();
+    setOpenedPath((prev) =>
+      prev === location.pathname ? null : location.pathname
+    );
+  };
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsPopUserOpen(false);
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setOpenedPath(null);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, []);
-
-  const togglePopUser = (e) => {
-    e.preventDefault();
-    setIsPopUserOpen((prev) => !prev);
-  };
+  }, [isOpen]);
 
   return (
     <S.HeaderStyled>
@@ -36,22 +48,24 @@ export default function Header() {
           <S.HeaderLogo>
             <Link to="/">
               <img
-                src={isDark ? '/images/logo_dark.png' : '/images/logo.png'}
+                src={theme.isDark ? '/images/logo_dark.png' : '/images/logo.png'}
                 alt="logo"
               />
             </Link>
           </S.HeaderLogo>
 
-          <S.HeaderNav ref={dropdownRef}>
-            <S.HeaderBtnMainNew onClick={() => setIsPopUserOpen(false)}>
+          <S.HeaderNav>
+            <S.HeaderBtnMainNew id="btnMainNew" $isHiddenMobile={isModalOpen}>
               <Link to="/card/new">Создать новую задачу</Link>
             </S.HeaderBtnMainNew>
 
-            <S.HeaderUser href="#" onClick={togglePopUser}>
-              {user?.name || 'Гость'}
-            </S.HeaderUser>
+            <div ref={userMenuRef}>
+              <S.HeaderUser href="#user-set-target" onClick={handleToggleUser}>
+                {user?.name || 'Пользователь'}
+              </S.HeaderUser>
 
-            <PopUser isOpen={isPopUserOpen} />
+              <PopUser isOpen={isOpen} />
+            </div>
           </S.HeaderNav>
         </S.HeaderBlock>
       </Container>

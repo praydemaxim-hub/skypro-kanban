@@ -152,6 +152,13 @@ export default function CardPage() {
               />
             </div>
 
+            <div className="theme-down__categories theme-down">
+              <p className="categories__p subttl">Категория</p>
+              <div className={`categories__theme ${topicClass} _active-category`}>
+                <p className={topicClass}>{task.topic}</p>
+              </div>
+            </div>
+
             {error && <p style={{ color: '#F84D4D', marginBottom: '10px', fontSize: '14px' }}>{error}</p>}
 
             {!isEditMode ? (
@@ -171,11 +178,11 @@ export default function CardPage() {
             ) : (
               <div className="pop-browse__btn-edit">
                 <div className="btn-group">
-                  <button className="btn-edit__edit _btn-bg _hover01" onClick={handleSave}>
+                  <button className="btn-edit__save _btn-bg _hover01" onClick={handleSave}>
                     <span style={{ color: 'white' }}>Сохранить</span>
                   </button>
                   <button
-                    className="btn-edit__edit _btn-bor _hover03"
+                    className="btn-edit__cancel _btn-bor _hover03"
                     onClick={() => {
                       setIsEditMode(false);
                       setEditedTask(task);

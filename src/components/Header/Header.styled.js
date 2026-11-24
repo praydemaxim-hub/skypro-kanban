@@ -4,6 +4,9 @@ export const HeaderStyled = styled.header`
   width: 100%;
   margin: 0 auto;
   background-color: ${({ theme }) => theme.colors.white};
+  position: sticky;
+  top: 0;
+  z-index: 8;
 `;
 
 export const HeaderBlock = styled.div`
@@ -53,7 +56,8 @@ export const HeaderBtnMainNew = styled.button`
     background-color: ${({ theme }) => theme.colors.primaryHover};
   }
 
-  @media screen and (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: ${({ $isHiddenMobile }) => ($isHiddenMobile ? 'none' : 'block')};
     z-index: 3;
     position: fixed;
     left: 16px;
