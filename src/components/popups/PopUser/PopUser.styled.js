@@ -8,7 +8,7 @@ export const PopUserSet = styled.div`
   width: 213px;
   height: 205px;
   border-radius: 10px;
-  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  border: 0.7px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0px 10px 39px 0px rgba(26, 56, 101, 0.21);
   padding: 34px;
@@ -51,9 +51,10 @@ export const PopUserTheme = styled.div`
     width: 24px;
     height: 13px;
     border-radius: 100px;
-    background: #eaeef6;
+    background: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#EAEEF6')};
     outline: none;
     appearance: none;
+    cursor: pointer;
 
     &::before {
       content: "";
@@ -63,8 +64,9 @@ export const PopUserTheme = styled.div`
       width: 11px;
       height: 11px;
       border-radius: 50%;
-      background-color: ${({ theme }) => theme.colors.grayText};
-      transition: 0.5s;
+      background-color: ${({ theme }) =>
+        theme.isDark ? theme.colors.primary : theme.colors.grayText};
+      transition: 0.3s;
     }
 
     &:checked::before {
@@ -73,16 +75,16 @@ export const PopUserTheme = styled.div`
   }
 `;
 
-// Пример наследования стилей
 export const BaseButton = styled.button`
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border: 1px solid
+    ${({ theme }) => (theme.isDark ? '#FFFFFF' : theme.colors.primary)};
   background: transparent;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : theme.colors.primary)};
   transition: all 0.2s;
-  
+
   a {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : theme.colors.primary)};
   }
 `;
 
@@ -92,10 +94,11 @@ export const PopUserButton = styled(BaseButton)`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.primaryHover};
-    color: ${({ theme }) => theme.colors.white};
-    
+    border-color: ${({ theme }) => theme.colors.primaryHover};
+    color: #ffffff;
+
     a {
-      color: ${({ theme }) => theme.colors.white};
+      color: #ffffff;
     }
   }
 `;

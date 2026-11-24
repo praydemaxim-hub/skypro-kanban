@@ -13,6 +13,10 @@ export const MainBlock = styled.div`
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
     padding: 40px 0 64px;
   }
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 20px 0 90px;
+  }
 `;
 
 export const MainContent = styled.div`
@@ -21,5 +25,19 @@ export const MainContent = styled.div`
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
     display: block;
+  }
+`;
+
+export const EmptyMessage = styled.div`
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: ${({ theme }) => theme.colors.grayText};
+    font-size: 20px;
+    font-weight: 500;
   }
 `;

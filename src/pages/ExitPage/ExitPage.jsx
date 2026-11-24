@@ -1,47 +1,31 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/AuthContext';
 
-export default function ExitPage({ handleAuth }) {
+export default function ExitPage() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    handleAuth(false);
-    navigate('/login');
+  const handleLogout = () => {
+    logout();
+    toast.info('Вы вышли из аккаунта');
   };
 
   return (
     <div className="pop-exit" id="popExit" style={{ display: 'block' }}>
-      <div className="pop-exit__container">
-        <div className="pop-exit__block">
+      <div className="pop-exit__container" onClick={() => navigate('/')}>
+        <div className="pop-exit__block" onClick={(e) => e.stopPropagation()}>
           <div className="pop-exit__ttl">
             <h2>Выйти из аккаунта?</h2>
           </div>
           <form className="pop-exit__form" id="popExitForm" action="#">
             <div className="pop-exit__form-group">
-              <button 
-                className="pop-exit__exit-yes _hover01" 
-                onClick={handleLogout}
-                style={{ color: 'white' }}
-              >
-                Да, выйти
+              <button className="pop-exit__exit-yes _hover01">
+                <Link to="/login" onClick={handleLogout}>Да, выйти</Link>
               </button>
-              
-              <button 
-                className="pop-exit__exit-no _hover01" 
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  navigate('/'); 
-                }}
-                style={{ 
-                  backgroundColor: '#565eef', // Синий фон, как у кнопки "Да, выйти"
-                  color: 'white',             // Белый текст
-                  border: 'none',             // Убираем прозрачную обводку
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center' 
-                }}
-              >
-                Нет, остаться
+
+              <button className="pop-exit__exit-no _hover03">
+                <Link to="/">Нет, остаться</Link>
               </button>
             </div>
           </form>

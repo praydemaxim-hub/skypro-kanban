@@ -7,6 +7,8 @@ export const MainColumn = styled.div`
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
     width: 100%;
+    margin: 0 auto 20px;
+    display: block;
   }
 `;
 
@@ -29,7 +31,22 @@ export const CardsContainer = styled.div`
   position: relative;
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.xl}) {
+    width: 100%;
     display: flex;
-    overflow-y: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 10px;
   }
+`;
+
+export const DropZone = styled.div`
+  width: 220px;
+  height: 130px;
+  min-width: 220px;
+  margin: 5px;
+  border-radius: 10px;
+  border: 1px dashed ${({ $isOver, theme }) => ($isOver ? theme.colors.primary : '#94A6BE')};
+  background-color: ${({ $isOver }) =>
+    $isOver ? 'rgba(86, 94, 239, 0.08)' : 'transparent'};
+  transition: all 0.2s ease;
 `;
