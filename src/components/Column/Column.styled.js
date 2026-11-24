@@ -33,3 +33,14 @@ export const CardsContainer = styled.div`
     overflow-y: auto;
   }
 `;
+
+export const DropZone = styled.div`
+  width: 220px;
+  height: 130px;
+  margin: 5px;
+  border-radius: 10px;
+  border: 1px dashed ${({ $isOver, theme }) => ($isOver ? theme.colors.primary : '#94A6BE')};
+  background-color: ${({ $isOver }) =>
+    $isOver ? 'rgba(86, 94, 239, 0.08)' : 'transparent'};
+  transition: all 0.2s ease;
+`;

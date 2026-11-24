@@ -1,20 +1,41 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import * as S from './Card.styled';
 
-export default function Card({ id, topic, title, date }) {
+export default function Card({ id, topic, title, date, onDragStartCard, onDragEndCard }) {
   const theme = useTheme();
+  const [isDragging, setIsDragging] = useState(false);
   const topicColor = theme.topicColors[topic] || theme.topicColors['default'];
 
-  // Форматируем дату
-  const formattedDate = new Date(date).toLocaleDateString("ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
+  const formattedDate = new Date(date).toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
   });
 
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+    e.dataTransfer.setData('text/plain', id);
+    e.dataTransfer.effectAllowed = 'move';
+    if (onDragStartCard) onDragStartCard(id);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    if (onDragEndCard) onDragEndCard();
+  };
+
   return (
-    <S.CardItem>
+    <S.CardItem
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        cursor: 'grab',
+      }}
+    >
       <S.CardWrapper>
         <S.CardGroup>
           <S.CardTheme $color={topicColor}>
@@ -31,7 +52,6 @@ export default function Card({ id, topic, title, date }) {
             <S.CardTitle>{title}</S.CardTitle>
           </Link>
           <S.CardDate>
-            {/* Иконка календаря оставлена без изменений */}
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
               <g clipPath="url(#clip0_1_415)">
                 <path d="M10.5625 2.03125H2.4375C1.7644 2.03125 1.21875 2.5769 1.21875 3.25V10.5625C1.21875 11.2356 1.7644 11.7812 2.4375 11.7812H10.5625C11.2356 11.7812 11.7812 11.2356 11.7812 10.5625V3.25C11.7812 2.5769 11.2356 2.03125 10.5625 2.03125Z" stroke="#94A6BE" strokeWidth="0.8" strokeLinejoin="round"/>
@@ -43,7 +63,6 @@ export default function Card({ id, topic, title, date }) {
                 </clipPath>
               </defs>
             </svg>
-            {/* Выводим отформатированную дату */}
             <p>{formattedDate}</p>
           </S.CardDate>
         </S.CardContent>
