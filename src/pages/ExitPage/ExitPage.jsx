@@ -1,4 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function ExitPage() {
@@ -7,6 +8,7 @@ export default function ExitPage() {
 
   const handleLogout = () => {
     logout();
+    toast.info('Вы вышли из аккаунта');
   };
 
   return (
@@ -18,15 +20,13 @@ export default function ExitPage() {
           </div>
           <form className="pop-exit__form" id="popExitForm" action="#">
             <div className="pop-exit__form-group">
-              
               <button className="pop-exit__exit-yes _hover01">
                 <Link to="/login" onClick={handleLogout}>Да, выйти</Link>
               </button>
-              
+
               <button className="pop-exit__exit-no _hover03">
                 <Link to="/">Нет, остаться</Link>
               </button>
-              
             </div>
           </form>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Calendar from '../../components/Calendar/Calendar';
 import { getTaskById } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
@@ -10,7 +11,7 @@ export default function CardPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { updateTask, deleteTask } = useTasks();
-  
+
   const [task, setTask] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedTask, setEditedTask] = useState(null);
@@ -22,25 +23,32 @@ export default function CardPage() {
         setTask(data);
         setEditedTask(data);
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        setError(err.message);
+        toast.error(err.message || 'Не удалось загрузить задачу');
+      });
   }, [id, user.token]);
 
   const handleDelete = async () => {
     try {
       await deleteTask(id);
+      toast.success('Задача удалена');
       navigate('/');
     } catch (err) {
       setError(err.message);
+      toast.error(err.message || 'Не удалось удалить задачу');
     }
   };
 
   const handleSave = async () => {
     try {
       await updateTask(id, editedTask);
+      toast.success('Задача успешно обновлена');
       setIsEditMode(false);
       navigate('/');
     } catch (err) {
       setError(err.message);
+      toast.error(err.message || 'Не удалось сохранить изменения');
     }
   };
 
@@ -49,7 +57,7 @@ export default function CardPage() {
     setEditedTask({ ...editedTask, [name]: value });
   };
 
-  if (!task) return <div style={{display: 'block'}} className="pop-browse">Загрузка...</div>;
+  if (!task) return <div style={{ display: 'block' }} className="pop-browse">Загрузка...</div>;
 
   return (
     <div className="pop-browse" id="popBrowse" style={{ display: 'block' }}>
@@ -67,18 +75,18 @@ export default function CardPage() {
               <p className="status__p subttl">Статус</p>
               <div className="status__themes">
                 {['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово'].map((status) => (
-                  <div 
+                  <div
                     key={status}
                     className={`status__theme ${editedTask?.status === status ? '_gray' : ''}`}
                     onClick={() => isEditMode && setEditedTask({ ...editedTask, status })}
-                    style={{ 
+                    style={{
                       cursor: isEditMode ? 'pointer' : 'default',
                       backgroundColor: editedTask?.status === status ? '#94A6BE' : 'transparent',
                       color: editedTask?.status === status ? '#FFF' : '#94A6BE',
                       border: editedTask?.status === status ? 'none' : '1px solid #94A6BE',
                       borderRadius: '24px',
                       padding: '8px 20px',
-                      marginRight: '10px'
+                      marginRight: '10px',
                     }}
                   >
                     <p>{status}</p>
@@ -102,14 +110,14 @@ export default function CardPage() {
                   ></textarea>
                 </div>
               </form>
-              
-              <Calendar 
-                selected={isEditMode ? new Date(editedTask.date) : new Date(task.date)} 
-                setSelected={(date) => isEditMode && setEditedTask({ ...editedTask, date })} 
+
+              <Calendar
+                selected={isEditMode ? new Date(editedTask.date) : new Date(task.date)}
+                setSelected={(date) => isEditMode && setEditedTask({ ...editedTask, date })}
               />
             </div>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
             {!isEditMode ? (
               <div className="pop-browse__btn-browse">
@@ -131,10 +139,13 @@ export default function CardPage() {
                   <button className="btn-edit__edit _btn-bg _hover01" onClick={handleSave}>
                     <span style={{ color: 'white' }}>Сохранить</span>
                   </button>
-                  <button className="btn-edit__edit _btn-bor _hover03" onClick={() => {
-                    setIsEditMode(false);
-                    setEditedTask(task);
-                  }}>
+                  <button
+                    className="btn-edit__edit _btn-bor _hover03"
+                    onClick={() => {
+                      setIsEditMode(false);
+                      setEditedTask(task);
+                    }}
+                  >
                     Отменить
                   </button>
                   <button className="btn-edit__delete _btn-bor _hover03" onClick={handleDelete}>

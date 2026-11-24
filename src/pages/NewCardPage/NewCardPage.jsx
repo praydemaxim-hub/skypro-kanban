@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Calendar from '../../components/Calendar/Calendar';
 import { useTasks } from '../../contexts/TaskContext';
 
 export default function NewCardPage() {
   const navigate = useNavigate();
-  const { addTask } = useTasks(); 
+  const { addTask } = useTasks();
 
   const [newTask, setNewTask] = useState({
     title: '',
@@ -18,6 +19,7 @@ export default function NewCardPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewTask({ ...newTask, [name]: value });
+    setError('');
   };
 
   const handleCreateTask = async (e) => {
@@ -28,9 +30,11 @@ export default function NewCardPage() {
     }
     try {
       await addTask(newTask);
+      toast.success('Задача создана');
       navigate('/');
     } catch (err) {
       setError(err.message);
+      toast.error(err.message || 'Не удалось создать задачу');
     }
   };
 
@@ -41,7 +45,7 @@ export default function NewCardPage() {
           <div className="pop-new-card__content">
             <h3 className="pop-new-card__ttl">Создание задачи</h3>
             <Link to="/" className="pop-new-card__close">✖</Link>
-            
+
             <div className="pop-new-card__wrap">
               <form className="pop-new-card__form form-new" id="formNewCard" onSubmit={handleCreateTask}>
                 <div className="form-new__block">
@@ -69,42 +73,42 @@ export default function NewCardPage() {
                   ></textarea>
                 </div>
               </form>
-              
-              <Calendar 
-                selected={newTask.date} 
-                setSelected={(date) => setNewTask({ ...newTask, date })} 
+
+              <Calendar
+                selected={newTask.date}
+                setSelected={(date) => setNewTask({ ...newTask, date })}
               />
             </div>
 
             <div className="pop-new-card__categories categories">
               <p className="categories__p subttl">Категория</p>
               <div className="categories__themes">
-                <div 
+                <div
                   className={`categories__theme _orange ${newTask.topic === 'Web Design' ? '_active-category' : ''}`}
                   onClick={() => setNewTask({ ...newTask, topic: 'Web Design' })}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 >
                   <p className="_orange">Web Design</p>
                 </div>
-                <div 
+                <div
                   className={`categories__theme _green ${newTask.topic === 'Research' ? '_active-category' : ''}`}
                   onClick={() => setNewTask({ ...newTask, topic: 'Research' })}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 >
                   <p className="_green">Research</p>
                 </div>
-                <div 
+                <div
                   className={`categories__theme _purple ${newTask.topic === 'Copywriting' ? '_active-category' : ''}`}
                   onClick={() => setNewTask({ ...newTask, topic: 'Copywriting' })}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 >
                   <p className="_purple">Copywriting</p>
                 </div>
               </div>
             </div>
 
-            {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-            
+            {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+
             <button className="form-new__create _hover01" id="btnCreate" onClick={handleCreateTask}>
               Создать задачу
             </button>

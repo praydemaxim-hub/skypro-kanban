@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { lightTheme, darkTheme } from '../theme';
 
 const ThemeContext = createContext(null);
@@ -22,7 +24,18 @@ export function AppThemeProvider({ children }) {
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
+      <ThemeProvider theme={currentTheme}>
+        {children}
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          theme={isDark ? 'dark' : 'light'}
+        />
+      </ThemeProvider>
     </ThemeContext.Provider>
   );
 }
